@@ -20,6 +20,7 @@ public class Order {
     @Column(name = "order_id")
     private Long id;
 
+    // x to one 연관관계는 지연로딩으로 설정
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -52,7 +53,8 @@ public class Order {
         delivery.setOrder(this);
     }
 
-    // 생성 메서드
+    // 생성 메서드: 주문 엔티티를 생성할 때 사용
+    // 주문 회원, 배송정보, 주문 상품의 정보를 받아서 실제 주문 엔티티를 생성
     public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
         Order order = new Order();
         order.setMember(member);
@@ -72,6 +74,7 @@ public class Order {
      * 주문 취소
      */
     public void cancel() {
+        // 이미 배송을 완료한 상품이면 주문을 취소하지 못하도록 예외 발생
         if (delivery.getStatus() == DeliveryStatus.COMP) {
             throw new IllegalStateException("이미 배송완료된 상품은 최소가 불가능합니다.");
         }
@@ -86,6 +89,7 @@ public class Order {
      * 전체 주문 가격 조회
      */
     public int getTotalPrice() {
+        // 연관된 주문 상품들의 가격을 조회해서 더한 값을 반환
         int totalPrice = orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
         return totalPrice;
     }

@@ -32,7 +32,8 @@ public class OrderItem {
 
     private int count;
 
-    // 생성 메서드
+    // 생성 메서드: 주문 상품, 가격, 수량 정보를 사용해서 주문 상품 엔티티를 생성하고
+    // 주문한 수량만큼 상품의 재고를 줄임
     public static OrderItem createOrderItem(Item item, int orderPrice, int count) {
         OrderItem orderItem = new OrderItem();
         orderItem.setItem(item);
@@ -45,6 +46,7 @@ public class OrderItem {
 
     // 비즈니스 로직
     public void cancel() {
+        // 취소한 주문 수량만큼 상품의 재고를 증가
         getItem().addStock(count);
     }
 
@@ -53,6 +55,7 @@ public class OrderItem {
      * 주문상품 전체 가격조회
      */
     public int getTotalPrice() {
+        // 주문 가격에 수량을 곱한 값 반환
         return getOrderPrice() * getCount();
     }
 }

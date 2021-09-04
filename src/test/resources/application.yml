@@ -1,20 +1,20 @@
+# 테스트용 설정 파일, 메모리 db 사용
 spring:
-  datasource:
-    url: jdbc:h2:mem:test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
+#  datasource:
+#    url: jdbc:h2:tcp://localhost/~/jpashop
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
 #        show_sql: true
-        format_sql: true
+#        format_sql: true
 
 logging:
   level:
     org.hibernate.SQL: debug
 #    org.hibernate.type: trace
-
