@@ -21,13 +21,13 @@ public class InitDb {
         initService.dbInit2();
     }
 
-
     @Component
     @Transactional
     @RequiredArgsConstructor
     static class InitService {
 
         private final EntityManager em;
+
         public void dbInit1() {
             Member member = createMember("userA", "서울", "1", "1111");
             em.persist(member);
@@ -44,7 +44,6 @@ public class InitDb {
             Delivery delivery = createDelivery(member);
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
-
         }
 
         private Delivery createDelivery(Member member) {

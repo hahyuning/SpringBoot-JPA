@@ -27,7 +27,7 @@ public class OrderRepository {
     }
 
     public List<Order> findAllByString(OrderSearch orderSearch) {
-        //language=JPAQL
+        //language=JPQL
         String jpql = "select o From Order o join o.member m";
         boolean isFirstCondition = true;
         //주문 상태 검색
@@ -85,6 +85,7 @@ public class OrderRepository {
         return query.getResultList();
     }
 
+    // 엔티티를 페치 조인을 사용해서 쿼리 1번에 조회
     public List<Order> findAllWithMemberDelivery() {
         return em.createQuery(
                 "select o from Order o" +
