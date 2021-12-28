@@ -14,6 +14,8 @@ spring:
       hibernate:
         #        show_sql: true
         format_sql: true
+        # 지연로딩 성능 최적화
+        default_batch_fetch_size: 100
 
 logging:
   level:
