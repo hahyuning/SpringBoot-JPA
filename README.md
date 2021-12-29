@@ -3,7 +3,7 @@
 
 참고자료
 - `스프링 부트와 AWS로 혼자 구현하는 웹 서비스`
-- `실전! 스프링 부트와 JPA 활용` 인강
+- `스프링 부트와 JPA 활용 - API 개발과 성능 최적화` 인강
 <br>
 
 ![image](http://image.kyobobook.co.kr/images/book/large/330/l9788960777330.jpg)
