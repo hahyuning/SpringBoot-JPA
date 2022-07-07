@@ -1,6 +1,8 @@
 package jpabook.jpashop.repository;
 
-import jpabook.jpashop.domain.Member;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jpabook.jpashop.domain.*;
 import jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.mapping.ToOne;
@@ -13,11 +15,14 @@ import javax.persistence.criteria.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jpabook.jpashop.domain.QOrder.order;
+
 @Repository
 @RequiredArgsConstructor
 public class OrderRepository {
 
     private final EntityManager em;
+    private final JPAQueryFactory jpaQueryFactory;
 
     public void save(Order order) {
         em.persist(order);
@@ -84,6 +89,34 @@ public class OrderRepository {
         cq.where(cb.and(criteria.toArray(new Predicate[criteria.size()])));
         TypedQuery<Order> query = em.createQuery(cq).setMaxResults(1000); //최대 1000건
         return query.getResultList();
+    }
+
+    // Querydsl
+    public List<Order> findAll(OrderSearch orderSearch) {
+
+        return jpaQueryFactory
+                .select(order)
+                .from(order)
+                .join(order.member, QMember.member)
+                .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName()))
+                .limit(1000)
+                .fetch();
+    }
+
+    // 동적 쿼리를 위해 함수 분리
+    private BooleanExpression nameLike(String membername) {
+        if (StringUtils.hasText(membername)) {
+            return null;
+        }
+        return QMember.member.name.like(membername);
+    }
+
+    // 동적 쿼리를 위해 함수 분리
+    private BooleanExpression statusEq(OrderStatus statusCond) {
+        if (statusCond == null) {
+            return null;
+        }
+        return order.status.eq(statusCond);
     }
 
     // 엔티티를 페치 조인을 사용해서 쿼리 1번에 조회
